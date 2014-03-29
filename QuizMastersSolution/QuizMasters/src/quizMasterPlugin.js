@@ -103,6 +103,7 @@
             if (cardSet) {
                 backupCardSet = cardSet.slice(0);
             } else {
+                toastr.error("One or both of the files were empty or the files didn't contain the same number of entries.");
                 return;
             }
 

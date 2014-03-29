@@ -20,13 +20,14 @@
         });
 
         // Click event listeners
-        $("#create-quiz").click(createQuestions);
-        $downloadQuestionsButton.click(createAnswers);
-        $downloadAnswersButton.click(reloadPage);
+        $("#create-quiz > a").click(createQuestions);
+        $("#download-questions > a").click(createAnswers);
+        $("#download-answers").click(reloadPage);
 
         // Helper functions
         function createQuestions() {
             if (!checkLengths()) {
+                toastr.error("The questions and answers must have the same number of entries and neither can be blank.");
                 return;
             }
             $("#download-questions > a").attr("href", quizService.createFile($("#questions").val() + "\n"));
@@ -53,7 +54,7 @@
         function checkLengths() {
             var questions = $questionsText.val().split("\n");
             var answers = $answersText.val().split("\n");
-            return questions.length === answers.length
+            return questions.length === answers.length && questions[0] !== "" && answers[0] !== "";
         }
     }
 })(jQuery, utils.quizService);

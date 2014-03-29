@@ -4,6 +4,9 @@ window.utils.quizService = (function quizService() {
     function arrayToObjectArray(array1, array2) {
         // Convert arrays into cardSet object array
         var objectArray = [];
+        if (array1.length !== array2.length || array1.length === 0 || array2.length === 0) {
+            return;
+        }
         for (var ii = 0; ii < array1.length; ++ii) {
             objectArray.push({ question: array1[ii], answer: array2[ii] });
         }
