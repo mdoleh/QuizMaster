@@ -24,34 +24,59 @@
 
 @section scripts {
     <script>
-        var textFile;
+        var textFile,
+            $downloadQuestionsButton = $("#download-questions"),
+            $downloadAnswersButton = $("#download-answers"),
+            $questionsText = $("#questions"),
+            $answersText = $("#answers");
 
         $("*").attr("tabindex", -1);
-        $("#questions").focus().attr("tabindex", 1);
-        $("#answers").attr("tabindex", 2);
+        $questionsText.focus().attr("tabindex", 1);
+        $answersText.attr("tabindex", 2);
+        
+        $(function () {
+            $questionsText.val(localStorage.getItem("questions"));
+            $answersText.val(localStorage.getItem("answers"));
+        });
+
+        $questionsText.on("change", function () {
+            localStorage.setItem("questions", $questionsText.val());
+        });
+        $answersText.on("change", function () {
+            localStorage.setItem("answers", $answersText.val());
+        });
 
         $("#create-quiz").click(createQuestions);
-        $("#download-questions").click(createAnswers);
-        $("#download-answers").click(reloadPage);
+        $downloadQuestionsButton.click(createAnswers);
+        $downloadAnswersButton.click(reloadPage);
 
         function createQuestions() {
+            if (!checkLengths()) {
+                return;
+            }
             $("#download-questions > a").attr("href", createFile($("#questions").val() + "\n"));
             $("#create-quiz").addClass("hidden");
-            $("#download-questions").removeClass("hidden");
+            $downloadQuestionsButton.removeClass("hidden");
             $("#instructions").html("Click the button above to download the questions. You may need to add the .txt file extension at the end of the file name when saving.");
         }
 
         function createAnswers() {
             $("#download-answers > a").attr("href", createFile($("#answers").val() + "\n"));
-            $("#download-questions").addClass("hidden");
-            $("#download-answers").removeClass("hidden");
+            $downloadQuestionsButton.addClass("hidden");
+            $downloadAnswersButton.removeClass("hidden");
             $("#instructions").html("Click the button above to download the answers. You may need to add the .txt file extension at the end of the file name when saving.");
         }
 
         function reloadPage() {
-            if (!$("#download-answers").hasClass("hidden")) {
+            if (!$downloadAnswersButton.hasClass("hidden")) {
                 location.reload();
             }
+        }
+
+        function checkLengths() {
+            var questions = $questionsText.val().split("\n");
+            var answers = $answersText.val().split("\n");
+            return questions.length === answers.length
         }
 
         function createFile(text) {
