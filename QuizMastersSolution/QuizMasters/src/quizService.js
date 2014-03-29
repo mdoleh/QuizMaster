@@ -53,6 +53,14 @@ window.utils.quizService = (function quizService() {
             } else {
                 reader.readAsText($quizFile[0].files[1]);
             }
+        },
+        createFile: function (text) {
+            var data = new Blob([text], { type: 'text/plain' });
+
+            textFile = URL.createObjectURL(data, { oneTimeOnly: true });
+
+            // returns a URL you can use as a href
+            return textFile;
         }
     }
 })();

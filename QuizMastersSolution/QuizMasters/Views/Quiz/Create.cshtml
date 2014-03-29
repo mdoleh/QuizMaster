@@ -3,7 +3,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container text-center">
+<div id="create-quiz-container" class="container text-center">
     <h2 id="create-quiz" class="title"><a href="#" class="button-link">Create a Quiz</a></h2>
     <h2 id="download-questions" class="title hidden"><a href="#" class="button-link" download>Download Questions</a></h2>
     <h2 id="download-answers" class="title hidden"><a href="#" class="button-link" download>Download Answers</a></h2>
@@ -23,70 +23,14 @@
 </div>
 
 @section scripts {
+    <script src="~/src/quizService.js"></script>
+    <script src="~/src/createQuizPlugin.js"></script>
     <script>
-        var textFile,
-            $downloadQuestionsButton = $("#download-questions"),
-            $downloadAnswersButton = $("#download-answers"),
-            $questionsText = $("#questions"),
-            $answersText = $("#answers");
-
-        $("*").attr("tabindex", -1);
-        $questionsText.focus().attr("tabindex", 1);
-        $answersText.attr("tabindex", 2);
-        
         $(function () {
-            $questionsText.val(localStorage.getItem("questions"));
-            $answersText.val(localStorage.getItem("answers"));
+            $("#questions").val(localStorage.getItem("questions"));
+            $("#answers").val(localStorage.getItem("answers"));
         });
-
-        $questionsText.on("change", function () {
-            localStorage.setItem("questions", $questionsText.val());
-        });
-        $answersText.on("change", function () {
-            localStorage.setItem("answers", $answersText.val());
-        });
-
-        $("#create-quiz").click(createQuestions);
-        $downloadQuestionsButton.click(createAnswers);
-        $downloadAnswersButton.click(reloadPage);
-
-        function createQuestions() {
-            if (!checkLengths()) {
-                return;
-            }
-            $("#download-questions > a").attr("href", createFile($("#questions").val() + "\n"));
-            $("#create-quiz").addClass("hidden");
-            $downloadQuestionsButton.removeClass("hidden");
-            $("#instructions").html("Click the button above to download the questions. You may need to add the .txt file extension at the end of the file name when saving.");
-        }
-
-        function createAnswers() {
-            $("#download-answers > a").attr("href", createFile($("#answers").val() + "\n"));
-            $downloadQuestionsButton.addClass("hidden");
-            $downloadAnswersButton.removeClass("hidden");
-            $("#instructions").html("Click the button above to download the answers. You may need to add the .txt file extension at the end of the file name when saving.");
-        }
-
-        function reloadPage() {
-            if (!$downloadAnswersButton.hasClass("hidden")) {
-                location.reload();
-            }
-        }
-
-        function checkLengths() {
-            var questions = $questionsText.val().split("\n");
-            var answers = $answersText.val().split("\n");
-            return questions.length === answers.length
-        }
-
-        function createFile(text) {
-            var data = new Blob([text], { type: 'text/plain' });
-
-            textFile = URL.createObjectURL(data, { oneTimeOnly: true });
-
-            // returns a URL you can use as a href
-            return textFile;
-        }
+        $("#create-quiz-container").createQuiz();
     </script>
 }
 
