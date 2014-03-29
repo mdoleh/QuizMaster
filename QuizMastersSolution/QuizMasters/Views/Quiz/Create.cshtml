@@ -1,0 +1,101 @@
+﻿@{
+    ViewBag.Title = "Create a Quiz";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container text-center">
+    <h2 id="create-quiz" class="title"><a href="#" class="button-link">Create a Quiz</a></h2>
+    <h2 id="download-questions" class="title hidden"><a href="#" class="button-link" download>Download Questions</a></h2>
+    <h2 id="download-answers" class="title hidden"><a href="#" class="button-link" download>Download Answers</a></h2>
+    <h3 id="instructions">Enter One Question and Answer per Line</h3>
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <div class="text-center pull-left" style="padding: 0px 5px 0px 0px">
+            <h4>Questions</h4>
+            <textarea id="questions" name="questions" cols="50" rows="25"></textarea>
+        </div>
+        <div class="text-center pull-left" style="padding: 0px 0px 0px 5px">
+            <h4>Answers</h4>
+            <textarea id="answers" name="answers" cols="50" rows="25"></textarea>
+        </div>
+    </div>
+    <div class="col-md-2"></div>
+</div>
+
+@section scripts {
+    <script>
+        var textFile;
+
+        $("*").attr("tabindex", -1);
+        $("#questions").focus().attr("tabindex", 1);
+        $("#answers").attr("tabindex", 2);
+
+        $("#create-quiz").click(createQuestions);
+        $("#download-questions").click(createAnswers);
+        $("#download-answers").click(reloadPage);
+
+        function createQuestions() {
+            $("#download-questions > a").attr("href", createFile($("#questions").val() + "\n"));
+            $("#create-quiz").addClass("hidden");
+            $("#download-questions").removeClass("hidden");
+            $("#instructions").html("Click the button above to download the questions. You may need to add the .txt file extension at the end of the file name when saving.");
+        }
+
+        function createAnswers() {
+            $("#download-answers > a").attr("href", createFile($("#answers").val() + "\n"));
+            $("#download-questions").addClass("hidden");
+            $("#download-answers").removeClass("hidden");
+            $("#instructions").html("Click the button above to download the answers. You may need to add the .txt file extension at the end of the file name when saving.");
+        }
+
+        function reloadPage() {
+            if (!$("#download-answers").hasClass("hidden")) {
+                location.reload();
+            }
+        }
+
+        function createFile(text) {
+            var data = new Blob([text], { type: 'text/plain' });
+
+            textFile = URL.createObjectURL(data, { oneTimeOnly: true });
+
+            // returns a URL you can use as a href
+            return textFile;
+        }
+    </script>
+}
+
+@section styles {
+    <style>
+        .button-link {
+            padding: 10px 15px;
+            background: #4479BA;
+            color: #FFF;
+            -webkit-border-radius: 4px;
+            -moz-border-radius: 4px;
+            border-radius: 4px;
+            border: solid 1px #20538D;
+            text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
+            -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+            -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+            -webkit-transition-duration: 0.2s;
+            -moz-transition-duration: 0.2s;
+            transition-duration: 0.2s;
+            -webkit-user-select:none;
+            -moz-user-select:none;
+            -ms-user-select:none;
+            user-select:none;
+        }
+        .button-link:active {
+            -webkit-box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.6);
+            -moz-box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.6);
+            box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.6);
+            background: #2E5481;
+            border: solid 1px #203E5F;
+        }
+        a, a:hover, a:active, a:focus {
+            text-decoration: none;
+        }
+    </style>
+}

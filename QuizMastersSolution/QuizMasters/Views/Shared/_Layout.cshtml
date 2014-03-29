@@ -4,14 +4,32 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
+    <style>
+        h2.title {
+            margin-top: 2.2em;
+        }
+    </style>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-theme.css" rel="stylesheet" />
     @RenderSection("styles", required: false)
 </head>
 <body>
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="navbar-header">
+        <span class="navbar-brand">Quiz Master</span>
+        <ul class="nav navbar-nav">
+            <li class="active text-center"><a href="/quiz">Home</a></li>
+            <li class="text-center"><a href="/quiz/create">Create</a></li>
+        </ul>
+      </div> 
+    </nav>
+
     @RenderBody()
 
     @Scripts.Render("~/bundles/jquery")
     @*@Scripts.Render("~/bundles/angular")*@
     @*@Scripts.Render("~/bundles/modernizr")*@
+    <script src="~/Scripts/bootstrap.js"></script>
     @RenderSection("scripts", required: false)
 </body>
 </html>

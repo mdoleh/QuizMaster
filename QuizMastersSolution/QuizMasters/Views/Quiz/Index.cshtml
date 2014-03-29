@@ -1,10 +1,10 @@
 ﻿@{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Quiz Master";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div id="quiz-master" class="container text-center">
-    <h2>Quiz Master</h2>
+<div id="quiz-master" class="container text-center ">
+    <h2 class="title">Quiz Master</h2>
     <div id="quiz-section" class="hidden">
         <div class="jumbotron">
             <h3 id="card">What is the meaning of life according to Hitchhiker's Guide to the Galaxy?</h3>
@@ -17,13 +17,13 @@
     
     <div id="upload-file-container" style="text-align: left">
         <h3>Upload a Quiz</h3>
+        <h4>A quiz consists of 2 files, one for questions and one for answers, and the file names must contain "questions" and "answers" respectively.</h4>
         <input id="quiz-file" type="file" multiple class="pull-left" />
         <input id="upload-file" type="button" value="Upload" class="btn btn-primary" />
     </div>
 </div>
 
 @section scripts {
-    <script src="~/Scripts/bootstrap.js"></script>
     <script src="~/src/utils.js"></script>
     <script src="~/src/quizService.js"></script>
     <script src="~/src/quizMasterPlugin.js"></script>
@@ -31,9 +31,4 @@
     <script>
         $("#quiz-master").quizMaster();
     </script>
-}
-
-@section styles {
-    <link href="~/Content/bootstrap.css" rel="stylesheet" />
-    <link href="~/Content/bootstrap-theme.css" rel="stylesheet" />
 }

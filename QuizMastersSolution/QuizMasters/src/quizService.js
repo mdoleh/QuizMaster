@@ -26,12 +26,16 @@ window.utils.quizService = (function quizService() {
             reader.onload = function (event1) {
                 content = event1.target.result;
                 questionsArray = content.split("\n");
-                questionsArray = questionsArray.slice(0, questionsArray.length - 2);
+                if (questionsArray[questionsArray.length - 1] === "") {
+                    questionsArray = questionsArray.slice(0, questionsArray.length - 2);
+                }
 
                 reader.onload = function (event2) {
                     content = event2.target.result;
                     answersArray = content.split("\n");
-                    answersArray = answersArray.slice(0, answersArray.length - 2);
+                    if (answersArray[answersArray.length - 1] === "") {
+                        answersArray = answersArray.slice(0, answersArray.length - 2);
+                    }
 
                     $quizFile[0].value = "";
                     callback(arrayToObjectArray(questionsArray, answersArray));

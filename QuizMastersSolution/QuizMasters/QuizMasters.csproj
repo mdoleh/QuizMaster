@@ -492,6 +492,7 @@
     <Content Include="Scripts\modernizr-2.7.2.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="src\quizMasterPlugin.js" />
+    <Content Include="src\quizService.js" />
     <Content Include="src\utils.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -506,6 +507,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Quiz\Index.cshtml" />
     <Content Include="Scripts\version.json" />
+    <Content Include="Views\Quiz\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
