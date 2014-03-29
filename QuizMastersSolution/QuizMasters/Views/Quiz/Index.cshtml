@@ -1,0 +1,179 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="quiz-master" class="container text-center">
+    <h2>Quiz Master</h2>
+    <div id="quiz-section" class="hidden">
+        <div class="jumbotron">
+            <h3 id="card">What is the meaning of life according to Hitchhiker's Guide to the Galaxy?</h3>
+        </div>
+        <input id="see-answer" type="button" value="See Answer" class="btn btn-primary" />
+        <input id="next-card" type="button" value="Next Card" class="btn btn-default hidden" />
+        <input id="restart-quiz" type="button" value="Quiz Again" class="btn btn-danger hidden" />
+    </div>
+    
+    <div id="upload-file-container" style="text-align: left">
+        <h3>Upload a Quiz</h3>
+        <input id="quiz-file" type="file" multiple class="pull-left" />
+        <input id="upload-file" type="button" value="Upload" class="btn btn-primary" />
+    </div>
+</div>
+
+@section scripts {
+    <script src="~/Scripts/bootstrap.js"></script>
+
+    <script>
+        // Keycode utility
+        window.utils = window.utils || {};
+        window.utils.keyCodes = {
+            spacebar: 32,
+            enter: 13
+        };
+        // Array shuffle method
+        Array.prototype.shuffle = function () {
+            for (var j, x, i = this.length; i; j = Math.floor(Math.random() * i), x = this[--i], this[i] = this[j], this[j] = x);
+            return this;
+        };
+        
+        (function($) {
+            $.fn.quizMaster = function () {
+                // UI elements
+                var $seeAnswerButton = $("#see-answer"),
+                    $nextCardButton = $("#next-card"),
+                    $restartButton = $("#restart-quiz"),
+                    $uploadButton = $("#upload-file"),
+                    $quizFile = $("#quiz-file"),
+                    $card = $("div > #card"),
+                    $uploadFileContainer = $("#upload-file-container"),
+                    $quizSection = $("#quiz-section");
+                
+                // Global variables
+                var cardSet = [],
+                    currentCard,
+                    backupCardSet;
+
+                // Button click detection
+                $seeAnswerButton.click(seeAnswer);
+                $nextCardButton.click(nextCard);
+                $restartButton.click(restartQuiz);
+                $uploadButton.click(readFile);
+
+                // Key press detection
+                $(document).on("keyup", function (event) {
+                    if (event.keyCode === utils.keyCodes.spacebar) {
+                        if (!$seeAnswerButton.hasClass("hidden")) {
+                            seeAnswer();
+                        } else if (!$nextCardButton.hasClass("hidden")) {
+                            nextCard();
+                        }
+                    }
+                });
+
+                // Helper functions
+                function seeAnswer() {
+                    if (currentCard) {
+                        showNextCardButton();
+                        $card.html(currentCard.answer);
+                    } else {
+                        showRestartButton();
+                    }
+                }
+
+                function nextCard() {
+                    currentCard = cardSet.pop();
+                    if (currentCard) {
+                        showSeeAnswerButton();
+                        $card.html(currentCard.question);
+                    } else {
+                        showRestartButton();
+                    }
+                }
+
+                function showRestartButton() {
+                    $nextCardButton.addClass("hidden");
+                    $seeAnswerButton.addClass("hidden");
+                    $restartButton.removeClass("hidden");
+                }
+
+                function showSeeAnswerButton() {
+                    $seeAnswerButton.removeClass("hidden");
+                    $nextCardButton.addClass("hidden");
+                    $restartButton.addClass("hidden");
+                }
+
+                function showNextCardButton() {
+                    $seeAnswerButton.addClass("hidden");
+                    $nextCardButton.removeClass("hidden");
+                    $restartButton.addClass("hidden");
+                }
+
+                function restartQuiz() {
+                    cardSet = backupCardSet.slice(0);
+                    startQuiz();
+                    showSeeAnswerButton();
+                }
+
+                function startQuiz() {
+                    cardSet = cardSet.shuffle();
+                    currentCard = cardSet.pop();
+                    $card.html(currentCard.question);
+                }
+
+                function readFile() {
+                    var reader = new FileReader(),
+                        content,
+                        questionsArray,
+                        answersArray;
+
+                    reader.onload = function (event) {
+                        content = event.target.result;
+                        questionsArray = content.split("\n");
+                        questionsArray = questionsArray.slice(0, questionsArray.length - 2);
+
+                        reader.onload = function (event) {
+                            content = event.target.result;
+                            answersArray = content.split("\n");
+                            answersArray = answersArray.slice(0, answersArray.length - 2);
+
+                            // Convert arrays into cardSet object array
+                            cardSet = [];
+                            for (var ii = 0; ii < questionsArray.length; ++ii) {
+                                cardSet.push({ question: questionsArray[ii], answer: answersArray[ii] });
+                            }
+                            backupCardSet = cardSet.slice(0);
+                            $quizFile[0].value = "";
+                            startQuiz();
+                        }
+
+                        if ($quizFile[0].files[1].name.toLowerCase().contains("answers")) {
+                            reader.readAsText($quizFile[0].files[1]);
+                        } else {
+                            reader.readAsText($quizFile[0].files[0]);
+                        }
+                    }
+
+                    if ($quizFile[0].files[0].name.toLowerCase().contains("questions")) {
+                        reader.readAsText($quizFile[0].files[0]);
+                    } else {
+                        reader.readAsText($quizFile[0].files[1]);
+                    }
+
+                    $uploadFileContainer.addClass("hidden");
+                    $quizSection.removeClass("hidden");
+                }
+
+                return this;
+            }
+        })(jQuery);
+
+        $("#quiz-master").quizMaster();
+
+    </script>
+}
+
+@section styles {
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-theme.css" rel="stylesheet" />
+}
