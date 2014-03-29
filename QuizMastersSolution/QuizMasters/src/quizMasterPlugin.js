@@ -4,6 +4,7 @@
         var $seeAnswerButton = $("#see-answer"),
             $nextCardButton = $("#next-card"),
             $restartButton = $("#restart-quiz"),
+            $newQuizButton = $("#new-quiz"),
             $uploadButton = $("#upload-file"),
             $quizFile = $("#quiz-file"),
             $card = $("div > #card"),
@@ -19,6 +20,7 @@
         $seeAnswerButton.click(seeAnswer);
         $nextCardButton.click(nextCard);
         $restartButton.click(restartQuiz);
+        $newQuizButton.click(reloadPage);
         $uploadButton.click(readFiles);
 
         // Key press detection
@@ -52,22 +54,31 @@
             }
         }
 
+        function reloadPage() {
+            if (!$newQuizButton.hasClass("hidden")) {
+                location.reload();
+            }
+        }
+
         function showRestartButton() {
             $nextCardButton.addClass("hidden");
             $seeAnswerButton.addClass("hidden");
             $restartButton.removeClass("hidden");
+            $newQuizButton.removeClass("hidden");
         }
 
         function showSeeAnswerButton() {
             $seeAnswerButton.removeClass("hidden");
             $nextCardButton.addClass("hidden");
             $restartButton.addClass("hidden");
+            $newQuizButton.addClass("hidden");
         }
 
         function showNextCardButton() {
             $seeAnswerButton.addClass("hidden");
             $nextCardButton.removeClass("hidden");
             $restartButton.addClass("hidden");
+            $newQuizButton.addClass("hidden");
         }
 
         function restartQuiz() {
