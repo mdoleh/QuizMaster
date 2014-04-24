@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Quiz Master</title>
+    <style>
+        h2.title {
+            margin-top: 2.2em;
+        }
+    </style>
+    <link href="quiz_master/bootstrap.css" rel="stylesheet">
+    <link href="quiz_master/bootstrap-theme.css" rel="stylesheet">
+    <link href="quiz_master/toastr.css" rel="stylesheet">
+    
+</head>
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="navbar-header">
+        <span class="navbar-brand">Quiz Master</span>
+        <ul class="nav navbar-nav">
+            <li class="active text-center"><a href="quiz.htm">Home</a></li>
+            <li class="text-center"><a href="create.htm">Create</a></li>
+        </ul>
+      </div> 
+    </nav>
+
+    
+
+<div id="quiz-master" class="container text-center ">
+    <h2 class="title">Quiz Master</h2>
+    <div id="quiz-section" class="hidden">
+        <div class="jumbotron">
+            <h3 id="card">What is the meaning of life according to Hitchhiker's Guide to the Galaxy?</h3>
+        </div>
+        <input id="see-answer" value="See Answer" class="btn btn-primary" type="button">
+        <input id="next-card" value="Next Card" class="btn btn-default hidden" type="button">
+        <input id="restart-quiz" value="Quiz Again" class="btn btn-danger hidden" type="button">
+        <input id="new-quiz" value="New Quiz" class="btn btn-default hidden" type="button">
+    </div>
+    
+    <div id="upload-file-container" style="text-align: left">
+        <h3>Upload a Quiz</h3>
+        <h4>A quiz consists of 2 files, one for questions and one for 
+answers, and the file names must contain "questions" and "answers" 
+respectively.</h4>
+        <input id="quiz-file" multiple="" class="pull-left" type="file">
+        <input id="upload-file" value="Upload" class="btn btn-primary" type="button">
+    </div>
+</div>
+
+
+
+    <script src="quiz_master/jquery-2.js"></script>
+
+    
+    
+    <script src="quiz_master/bootstrap.js"></script>
+    <script src="quiz_master/toastr.js"></script>
+    
+    <script src="quiz_master/utils.js"></script>
+    <script src="quiz_master/quizService.js"></script>
+    <script src="quiz_master/quizMasterPlugin.js"></script>
+
+    <script>
+        $("#quiz-master").quizMaster();
+    </script>
+
+
+
+</body></html>
