@@ -30,14 +30,14 @@ window.utils.quizService = (function quizService() {
                 content = event1.target.result;
                 questionsArray = content.split("\n");
                 if (questionsArray[questionsArray.length - 1] === "") {
-                    questionsArray = questionsArray.slice(0, questionsArray.length - 2);
+                    questionsArray = questionsArray.slice(0, questionsArray.length - 1);
                 }
 
                 reader.onload = function (event2) {
                     content = event2.target.result;
                     answersArray = content.split("\n");
                     if (answersArray[answersArray.length - 1] === "") {
-                        answersArray = answersArray.slice(0, answersArray.length - 2);
+                        answersArray = answersArray.slice(0, answersArray.length - 1);
                     }
 
                     $quizFile[0].value = "";
